@@ -43,9 +43,11 @@ function createWindow () {
 
   ipcMain.on('asynchronous-message', (event, arg) => {
     googleSignIn();
-    console.log(arg)  // prints "ping"
     event.sender.send('asynchronous-reply', 'pong')
   })
+
+  // @TODO: Remove this when we add electorn to react
+  googleSignIn();
 }
 
 // This method will be called when Electron has finished

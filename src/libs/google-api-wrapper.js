@@ -73,4 +73,27 @@ GoogleApiWrapper.insertLiveChat = function(oauth2Client, liveChatId, message) {
   return promise;
 };
 
+GoogleApiWrapper.listLiveChat = function(oauth2Client, liveChatId, paramsInc) {
+  const youtube = this.youtube;
+
+  var promise = new Promise(function(resolve, reject) {
+    let params = {
+      part: 'snippet,id',
+      liveChatId,
+      auth: oauth2Client,
+    };
+    Object.assign(params, paramsInc);
+
+    let options =  {};
+
+    youtube.liveChatMessages.list(params, options,
+      function(err, response) {
+        if (err) return reject(err);
+        return resolve(response);
+      });
+  });
+
+  return promise;
+};
+
 module.exports = GoogleApiWrapper;

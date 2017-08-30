@@ -24,7 +24,6 @@ client.connect();
 client.on("message", function (channel, userstate, message, self) {
     // Don't listen to my own messages..
     if (self) return;
-    console.log(message)
     //Fire the 'scream' event:
     eventbus.emit('scream', message);
     // Handle different message types..

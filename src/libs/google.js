@@ -3,6 +3,7 @@ import remote from 'electron'
 import axios from 'axios'
 import qs from 'qs'
 import eventbus from './eventbus'
+import moment from 'moment';
 
 const GOOGLE_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth'
 const GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token'
@@ -21,6 +22,9 @@ var oauth2Client = new OAuth2(
   YOUR_CLIENT_SECRET,
   GOOGLE_REDIRECT_URI
 );
+
+let lastTimeChecked = moment();
+let nextPageToken = '';
 
 export async function googleSignIn () {
   const code = await signInWithPopup()
@@ -44,14 +48,44 @@ function mySignInFunction (oauth2Client) {
 
 
   GoogleApiWrapper.listLiveBroadcasts(GoogleApiWrapper.oauth2Client)
-    .then(function (profile) {
-      const liveChatId = profile.items[0].snippet.liveChatId;
-      GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, 'Hello');
-      eventbus.on('scream', (message) => {
-        GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
-      });
-    });
+    .then(finishLoadingGoogle);
 
+}
+
+function finishLoadingGoogle (profile) {
+  const liveChatId = profile.items[0].snippet.liveChatId;
+
+  GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, 'Hello');
+
+  eventbus.on('scream', (message) => {
+    console.log(messsage);
+    // @TODO: Get google profile ID or id from youtube and ensure we don't send coming from Twitch
+    // GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
+  });
+
+  // @TODO: we need to throttle after promises and useing the recommendation in the response
+  setInterval(() => {
+    console.log("getting mores", nextPageToken)
+    let params = {};
+    if (nextPageToken) params.pageToken = nextPageToken;
+
+    GoogleApiWrapper.listLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, params)
+      .then(parseLiveChatMessages)
+  }, 1000);
+}
+
+function parseLiveChatMessages (response) {
+  nextPageToken = response.nextPageToken;
+  lastTimeChecked = moment();
+
+  response.items.forEach(item => {
+    let dateOfItem = moment(item.snippet.publishedAt);
+    if (lastTimeChecked.isAfter(dateOfItem)) {
+      // console.log(item)
+      // console.log(item.snippet)
+      eventbus.emit('new-youtube-message', message);
+    }
+  });
 }
 
 export function signInWithPopup () {
