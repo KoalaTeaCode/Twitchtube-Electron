@@ -10,7 +10,7 @@ var options = {
     },
     identity: {
         username: "twitchtubebot",
-        password: "oauth:s3bw0vykfgo0jx7hn1wbjr9zv14aqe"
+        password: "oauth:s3bw0vykfgo0jx7hn1wbjr9zv14aqe" // @TODO: is this save to package
     },
     channels: ["#thehollidayinn"]
 };

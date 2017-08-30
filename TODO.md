@@ -1,0 +1,5 @@
+- [ ] Youtube to Twitch
+- [ ] Save Auth for Youtube connection
+- [ ] Add twitch oauth
+- [ ] Add configs
+- [ ] Added initial react
