@@ -2,4 +2,5 @@
 - [ ] Save Auth for Youtube connection
 - [ ] Add twitch oauth
 - [ ] Add configs
-- [ ] Added initial react
+- [x] Added initial react
+- [ ] Add production react command
