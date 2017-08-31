@@ -44,14 +44,15 @@ function createWindow () {
   })
 
 
-  ipcMain.on('asynchronous-message', (event, arg) => {
+  ipcMain.on('google-sign-in', (event, arg) => {
     googleSignIn();
     event.sender.send('asynchronous-reply', 'pong')
   })
 
-  // @TODO: Remove this when we add electorn to react
-  // googleSignIn();
-  twitchSignIn();
+  ipcMain.on('twitch-sign-in', (event, arg) => {
+    twitchSignIn();
+    event.sender.send('asynchronous-reply', 'pong')
+  })
 }
 
 // This method will be called when Electron has finished
