@@ -12,7 +12,7 @@ const path = require('path')
 const url = require('url')
 
 // Local libs
-const twitch = require('./libs/twitch.js');
+const { twitchSignIn } = require('./libs/twitch.js');
 const transporter = require('./libs/transporter.js');
 import { googleSignIn } from './libs/google.js';
 
@@ -50,7 +50,8 @@ function createWindow () {
   })
 
   // @TODO: Remove this when we add electorn to react
-  googleSignIn();
+  // googleSignIn();
+  twitchSignIn();
 }
 
 // This method will be called when Electron has finished

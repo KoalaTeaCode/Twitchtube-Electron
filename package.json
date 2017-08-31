@@ -30,6 +30,7 @@
     "electron": "~1.6.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "twitch-api": "^0.4.6",
     "webpack": "^3.5.5"
   },
   "dependencies": {
