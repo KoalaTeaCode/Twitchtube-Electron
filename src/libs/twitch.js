@@ -1,5 +1,6 @@
 var tmi = require("tmi.js");
 let eventbus = require('./eventbus');
+let channel = "#thehollidayinn";
 
 var options = {
     options: {
@@ -12,7 +13,7 @@ var options = {
         username: "twitchtubebot",
         password: "oauth:s3bw0vykfgo0jx7hn1wbjr9zv14aqe" // @TODO: is this save to package
     },
-    channels: ["#thehollidayinn"]
+    channels: [channel]
 };
 
 var client = new tmi.client(options);
@@ -22,10 +23,8 @@ client.connect();
 
 
 client.on("message", function (channel, userstate, message, self) {
-    // Don't listen to my own messages..
     if (self) return;
-    //Fire the 'scream' event:
-    eventbus.emit('scream', message);
+
     // Handle different message types..
     switch(userstate["message-type"]) {
         case "action":
@@ -33,6 +32,7 @@ client.on("message", function (channel, userstate, message, self) {
             break;
         case "chat":
             // This is a chat message..
+            eventbus.emit('new-twitch-message', message);
             break;
         case "whisper":
             // This is a whisper..
@@ -41,4 +41,8 @@ client.on("message", function (channel, userstate, message, self) {
             // Something else ?
             break;
     }
+});
+
+eventbus.on('new-youtube-message', (message) => {
+  client.action(channel, message);
 });

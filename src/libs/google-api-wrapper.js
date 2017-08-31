@@ -48,7 +48,7 @@ GoogleApiWrapper.insertLiveChat = function(oauth2Client, liveChatId, message) {
 
   var promise = new Promise(function(resolve, reject) {
     let params = {
-      part: 'snippet,id',
+      part: 'snippet,id,authorDetails',
       auth: oauth2Client,
       resource: {
         snippet: {

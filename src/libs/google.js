@@ -23,6 +23,8 @@ var oauth2Client = new OAuth2(
   GOOGLE_REDIRECT_URI
 );
 
+let displayName = '';
+let liveChatId = '';
 let lastTimeChecked = moment();
 let nextPageToken = '';
 
@@ -46,46 +48,53 @@ function mySignInFunction (oauth2Client) {
 
   GoogleApiWrapper.setUpYoutube(oauth2Client);
 
+  GoogleApiWrapper.plusGetPeople(GoogleApiWrapper.oauth2Client)
+    .then(plusProfile => {
+      displayName = plusProfile.displayName;
 
-  GoogleApiWrapper.listLiveBroadcasts(GoogleApiWrapper.oauth2Client)
+      return GoogleApiWrapper.listLiveBroadcasts(GoogleApiWrapper.oauth2Client)
+    })
     .then(finishLoadingGoogle);
-
 }
 
 function finishLoadingGoogle (profile) {
-  const liveChatId = profile.items[0].snippet.liveChatId;
+  liveChatId = profile.items[0].snippet.liveChatId;
 
   GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, 'Hello');
 
-  eventbus.on('scream', (message) => {
-    console.log(messsage);
-    // @TODO: Get google profile ID or id from youtube and ensure we don't send coming from Twitch
-    // GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
+  eventbus.on('new-twitch-message', (message) => {
+    if (message.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
+    GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
   });
 
-  // @TODO: we need to throttle after promises and useing the recommendation in the response
-  setInterval(() => {
-    console.log("getting mores", nextPageToken)
-    let params = {};
-    if (nextPageToken) params.pageToken = nextPageToken;
+  getChat()
 
-    GoogleApiWrapper.listLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, params)
-      .then(parseLiveChatMessages)
-  }, 1000);
+}
+
+function getChat () {
+  let params = {};
+  if (nextPageToken) params.pageToken = nextPageToken;
+
+  GoogleApiWrapper.listLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, params)
+    .then(parseLiveChatMessages)
 }
 
 function parseLiveChatMessages (response) {
   nextPageToken = response.nextPageToken;
-  lastTimeChecked = moment();
-
   response.items.forEach(item => {
     let dateOfItem = moment(item.snippet.publishedAt);
-    if (lastTimeChecked.isAfter(dateOfItem)) {
-      // console.log(item)
-      // console.log(item.snippet)
-      eventbus.emit('new-youtube-message', message);
+    if (lastTimeChecked.isBefore(dateOfItem)) {
+      let messageText = item.snippet.displayMessage;
+      eventbus.emit('new-youtube-message', messageText);
+
+      // We only need to update this after we have seen a new message
+      lastTimeChecked = moment();
     }
   });
+
+  setTimeout(() => {
+    getChat()
+  }, response.pollingIntervalMillis)
 }
 
 export function signInWithPopup () {
@@ -110,7 +119,7 @@ export function signInWithPopup () {
       'https://www.googleapis.com/auth/plus.me',
       // 'https://www.googleapis.com/auth/calendar',
       'https://www.googleapis.com/auth/youtube',
-    'https://www.googleapis.com/auth/youtube.force-ssl',
+      'https://www.googleapis.com/auth/youtube.force-ssl',
     ];
 
     const authUrl = oauth2Client.generateAuthUrl({
