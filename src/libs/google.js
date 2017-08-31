@@ -8,27 +8,30 @@ import moment from 'moment';
 const GOOGLE_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth'
 const GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token'
 const GOOGLE_PROFILE_URL = 'https://www.googleapis.com/userinfo/v2/me'
-const GOOGLE_CLIENT_ID = '236227181472-kjsleiv4efcbp7faucu0km6vmrod72pg.apps.googleusercontent.com';
-const GOOGLE_REDIRECT_URI = 'http://localhost';
-const YOUR_CLIENT_SECRET = 'v-k9T64uixO2MnMJ5n4WYwp0';
+let GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI
+let GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 
 var google = require('googleapis');
 var youtube = google.youtube('v3');
 var OAuth2 = google.auth.OAuth2;
 var GoogleApiWrapper = require('./google-api-wrapper');
 
-var oauth2Client = new OAuth2(
-  GOOGLE_CLIENT_ID,
-  YOUR_CLIENT_SECRET,
-  GOOGLE_REDIRECT_URI
-);
-
+let oauth2Client = {};
 let displayName = '';
 let liveChatId = '';
 let lastTimeChecked = moment();
 let nextPageToken = '';
 
 export async function googleSignIn () {
+  GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+  GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI
+  GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+  oauth2Client = new OAuth2(
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_REDIRECT_URI
+  );
   const code = await signInWithPopup()
 
   oauth2Client.getToken(code, function (err, tokens) {

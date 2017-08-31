@@ -1,8 +1,11 @@
 var tmi = require("tmi.js");
 let eventbus = require('./eventbus');
-let channel = "#thehollidayinn";
+let channel = "#thehollidayinn"; // @TODO: Should be inserted on front end by user
 
-var options = {
+const TWITCH_USERNAME = process.env.TWITCH_USERNAME;
+const TWITCH_PASSWORD = process.env.TWITCH_PASSWORD;
+
+const options = {
     options: {
         // debug: true
     },
@@ -10,13 +13,13 @@ var options = {
         reconnect: true
     },
     identity: {
-        username: "twitchtubebot",
-        password: "oauth:s3bw0vykfgo0jx7hn1wbjr9zv14aqe" // @TODO: is this save to package
+        username: TWITCH_USERNAME,
+        password: TWITCH_PASSWORD,
     },
     channels: [channel]
 };
 
-var client = new tmi.client(options);
+const client = new tmi.client(options);
 
 // Connect the client to the server..
 client.connect();

@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
