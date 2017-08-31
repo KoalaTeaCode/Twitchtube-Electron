@@ -1,7 +1,9 @@
 - [x] Youtube to Twitch
 - [ ] Save Auth for Youtube connection
 - [ ] Add twitch oauth
-- [ ] Add configs
+- [x] Add configs
 - [x] Added initial react
 - [ ] Add production react command
 - [ ] Add eslint
+- [ ] Commands
+- [ ] Timers
