@@ -24,7 +24,6 @@ const client = new tmi.client(options);
 // Connect the client to the server..
 client.connect();
 
-
 client.on("message", function (channel, userstate, message, self) {
     if (self) return;
 
@@ -46,6 +45,10 @@ client.on("message", function (channel, userstate, message, self) {
     }
 });
 
+client.on("subscription", function (channel, username, method, message, userstate) {
+  client.say(channel, `{username} has subscribed!`);
+});
+
 eventbus.on('new-youtube-message', (message) => {
-  client.action(channel, message);
+  client.say(channel, message);
 });
