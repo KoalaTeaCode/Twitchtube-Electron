@@ -8,10 +8,16 @@ import {
 } from 'react-router-dom'
 
 import Nav from './nav/Nav';
+import Footer from './components/Footer'
+import AddTodo from './containers/AddTodo'
+import VisibleTodoList from './containers/VisibleTodoList'
 
 const Home = () => (
   <div>
     <h2>Home</h2>
+    <AddTodo />
+    <VisibleTodoList />
+    <Footer />
   </div>
 )
 
