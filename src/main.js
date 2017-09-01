@@ -6,7 +6,7 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
-const { ipcMain } = require('electron')
+const { ipcMain } = require('electron');
 
 const path = require('path')
 const url = require('url')
@@ -15,6 +15,7 @@ const url = require('url')
 const { twitchSignIn } = require('./libs/twitch.js');
 const transporter = require('./libs/transporter.js');
 import { googleSignIn } from './libs/google.js';
+import commands from './libs/commands.js';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -47,12 +48,14 @@ function createWindow () {
   ipcMain.on('google-sign-in', (event, arg) => {
     googleSignIn();
     event.sender.send('asynchronous-reply', 'pong')
-  })
+  });
 
   ipcMain.on('twitch-sign-in', (event, arg) => {
     twitchSignIn();
     event.sender.send('asynchronous-reply', 'pong')
   })
+
+  twitchSignIn();
 }
 
 // This method will be called when Electron has finished

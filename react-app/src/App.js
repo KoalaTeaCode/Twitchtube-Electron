@@ -11,6 +11,7 @@ import Nav from './nav/Nav';
 import Footer from './components/Footer'
 import AddTodo from './containers/AddTodo'
 import VisibleTodoList from './containers/VisibleTodoList'
+import Commands from './commands'
 
 const Home = () => (
   <div>
@@ -21,17 +22,16 @@ const Home = () => (
   </div>
 )
 
-const Commands = () => (
-  <div>
-    <h2>Commands</h2>
-  </div>
-)
-
 class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App container">
+        <div className="App container-fluid">
+          <nav className="navbar navbar-light bg-faded">
+            <a className="navbar-brand" href="#">
+              Bootstrap
+            </a>
+          </nav>
           <div className="row">
             <section className='col-2'>
               <Nav value={'test'} />

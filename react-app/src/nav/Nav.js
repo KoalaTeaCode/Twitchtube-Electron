@@ -16,9 +16,13 @@ class Nav extends Component {
 
   render() {
     return (
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/commands">Commands</Link></li>
+      <ul className="nav flex-column">
+        <li className="nav-item">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/commands">Commands</Link>
+        </li>
       </ul>
     );
   }

@@ -68,6 +68,10 @@ function setUpClient () {
   eventbus.on('new-youtube-message', (message) => {
     client.say(channel, message);
   });
+
+  eventbus.on('outgoing-twitch-message', (message) => {
+    client.say(channel, message);
+  });
 }
 
 function setChannel () {
