@@ -5,13 +5,14 @@ import axios from 'axios'
 import qs from 'qs'
 import eventbus from './eventbus'
 import moment from 'moment';
+import config from '../config'
 
 const GOOGLE_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth'
 const GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token'
 const GOOGLE_PROFILE_URL = 'https://www.googleapis.com/userinfo/v2/me'
-let GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI
-let GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+let GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID
+let GOOGLE_REDIRECT_URI = config.GOOGLE_REDIRECT_URI || process.env.GOOGLE_REDIRECT_URI
+let GOOGLE_CLIENT_SECRET = config.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET
 
 var google = require('googleapis');
 var youtube = google.youtube('v3');
@@ -28,9 +29,6 @@ let startedEverything = false;
 let chatTimeout;
 
 export async function googleSignIn () {
-  GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-  GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI
-  GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
   oauth2Client = new OAuth2(
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,

@@ -6,5 +6,6 @@
  - In this root directory, `npm start`
 
 # Build
+  - make config.json from env
   - cd react-app && yarn build
   - yarn dist
