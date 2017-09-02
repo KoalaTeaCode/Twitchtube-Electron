@@ -4,3 +4,7 @@
  - yarn start
  - Open a new terminal
  - In this root directory, `npm start`
+
+# Build
+  - cd react-app && yarn build
+  - yarn dist

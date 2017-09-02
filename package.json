@@ -1,14 +1,16 @@
 {
   "name": "twitchtube-electron",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
+  "description": "A bot that syncs chat between streaming services",
+  "main": "./dist/index.js",
   "scripts": {
     "start": "npm run build && electron ./dist/index.js",
     "dev": "babel-node src/main.js",
     "build": "babel src -d dist",
     "babel": "babel",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -18,8 +20,17 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "KeithHolliday",
   "license": "CC0-1.0",
+  "build": {
+    "appId": "twitchtube.electron",
+    "mac": {
+      "category": "twitchtube.electron.gaming.bot"
+    },
+    "windows": {
+      "category": "twitchtube.electron.gaming.bot"
+    }
+  },
   "devDependencies": {
     "axios": "^0.16.2",
     "babel-core": "^6.26.0",

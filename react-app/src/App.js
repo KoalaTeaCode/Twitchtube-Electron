@@ -5,6 +5,7 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Route,
+  Redirect,
 } from 'react-router-dom'
 
 import Nav from './nav/Nav';
@@ -30,6 +31,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+          <Redirect from="/" to="/home" />
           <div className='container-fluid'>
             <div className="row">
               <section className='col-3 sidebar'>
@@ -38,7 +40,7 @@ class App extends Component {
               </section>
 
               <section className="col-9 offset-3 App-intro">
-                <Route exact path="/" component={Home} />
+                <Route exact path="/home" component={Home} />
                 <Route exact path="/commands" component={Commands} />
                 <Route exact path="/timers" component={Timers} />
               </section>

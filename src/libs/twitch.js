@@ -79,7 +79,7 @@ function setUpClient () {
 
   eventbus.on('new-youtube-message', (message) => {
     if (status === 'stopped') return;
-    console.log(message)
+
     // @TODO: This should be checking for the youtube name right?
     if (message.indexOf('From') !== -1) return; // Doesn't seem like the best way to prevent
 
