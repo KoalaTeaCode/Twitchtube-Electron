@@ -26,21 +26,24 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App container-fluid">
+        <div className="App">
           <nav className="navbar navbar-light bg-faded">
             <a className="navbar-brand" href="#">
               Bootstrap
             </a>
           </nav>
-          <div className="row">
-            <section className='col-2'>
-              <Nav value={'test'} />
-            </section>
 
-            <section className="col-10 App-intro">
-              <Route exact path="/" component={Home} />
-              <Route exact path="/commands" component={Commands} />
-            </section>
+          <div className='container-fluid'>
+            <div className="row">
+              <section className='col-2'>
+                <Nav value={'test'} />
+              </section>
+
+              <section className="col-10 App-intro">
+                <Route exact path="/" component={Home} />
+                <Route exact path="/commands" component={Commands} />
+              </section>
+            </div>
           </div>
         </div>
       </Router>
