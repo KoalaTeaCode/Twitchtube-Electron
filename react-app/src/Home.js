@@ -5,14 +5,6 @@ const electron = window.require('electron');
 const fs = electron.remote.require('fs');
 const ipcRenderer  = electron.ipcRenderer;
 
-function stopYoutube(props) {
-  return (
-    <button onClick={props.onClick}>
-      Stop Youtube
-    </button>
-  );
-}
-
 class Home extends Component {
   constructor () {
     super()
@@ -59,16 +51,35 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Home</h2>
+      <div className='row'>
+        <div className='col-12'>
+          <h1>Home</h1>
+          <hr />
+        </div>
 
-        <button onClick={this.startTwitch}>
-          {this.state.twitchStatus === 'started' ? 'Stop' : 'Start'} Twitch
-        </button>
+        <div className='col-12 row bot-row'>
+          <div className='col-2'>
+            <img src='https://www.twitch.tv/p/assets/uploads/combologo_474x356.png' width='100' />
+          </div>
 
-        <button onClick={this.startYoutube}>
-          {this.state.youtubeStatus === 'started' ? 'Stop' : 'Start'} Youtube
-        </button>
+          <div className='col-4'>
+            <button className='btn btn-primary' onClick={this.startTwitch}>
+              {this.state.twitchStatus === 'started' ? 'Stop' : 'Start'} Twitch
+            </button>
+          </div>
+        </div>
+
+        <div className='col-12 row bot-row'>
+          <div className='col-2'>
+            <img src='https://newswatchtv.com/wp-content/uploads/2015/08/Youtube-Gaming-logo.jpg' width='100'  />
+          </div>
+
+          <div className='col-4'>
+            <button className='btn btn-primary' onClick={this.startYoutube}>
+              {this.state.youtubeStatus === 'started' ? 'Stop' : 'Start'} Youtube
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

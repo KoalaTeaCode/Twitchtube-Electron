@@ -5,10 +5,10 @@ import React from 'react'
 // <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />
 
 const CommandList = ({ commands, onClick }) => (
-  <ul>
+  <ul className='list-group'>
     {
       commands.map(command => (
-        <li> {command} </li>
+        <li className="list-group-item"> {command} </li>
       ))
     }
   </ul>

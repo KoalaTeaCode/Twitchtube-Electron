@@ -25,19 +25,14 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <nav className="navbar navbar-light bg-faded">
-            <a className="navbar-brand" href="#">
-              Bootstrap
-            </a>
-          </nav>
-
           <div className='container-fluid'>
             <div className="row">
-              <section className='col-2'>
+              <section className='col-3 sidebar'>
+                <h4>TwitchTube</h4>
                 <Nav value={'test'} />
               </section>
 
-              <section className="col-10 App-intro">
+              <section className="col-9 App-intro">
                 <Route exact path="/" component={Home} />
                 <Route exact path="/commands" component={Commands} />
                 <Route exact path="/timers" component={Timers} />

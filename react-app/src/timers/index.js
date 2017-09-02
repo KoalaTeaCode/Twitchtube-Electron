@@ -62,19 +62,32 @@ class Timers extends Component {
   render() {
     return (
       <div>
-        <h2>Timers</h2>
+        <h1>Timers</h1>
+        <hr />
 
+        <h3>Add Timer</h3>
         <form
           onSubmit={this.addTimer}
         >
-          <input type='text' placeholder='message' value={this.state.message} onChange={this.handleMessageChange} />
-          <input type='number' placeholder='interval' value={this.state.interval} onChange={this.handleIntervalChange} />
+          <div className='form-group'>
+            <label> Message: </label>
+            <input className='form-control' type='text' placeholder='message' value={this.state.message} onChange={this.handleMessageChange} />
+          </div>
 
-          <button type="submit">
+          <div className='form-group'>
+            <label> Interval: </label>
+            <input className='form-control' type='number' placeholder='interval' value={this.state.interval} onChange={this.handleIntervalChange} />
+          </div>
+
+          <button className='btn btn-primary' type="submit">
             Add
           </button>
         </form>
 
+        <br />
+        <br />
+
+        <h3>Current Timers</h3>
         <TimerList timers={this.state.timers} />
       </div>
     );

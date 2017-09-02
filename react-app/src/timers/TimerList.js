@@ -5,10 +5,10 @@ import React from 'react'
 // <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />
 
 const TimerList = ({ timers, onClick }) => (
-  <ul>
+  <ul className='list-group' >
     {
       timers.map(timer => (
-        <li> {timer.message} {timer.interval} </li>
+        <li className="list-group-item"> {timer.message} {timer.interval} </li>
       ))
     }
   </ul>

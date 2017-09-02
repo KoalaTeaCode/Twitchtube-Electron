@@ -1,4 +1,17 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+h1 {
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 .App {
+  font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .App-logo {
@@ -14,9 +27,38 @@
 
 .App-intro {
   font-size: large;
+  padding-top: 2em;
 }
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.bot-row {
+  margin-bottom: 1em;
+}
+
+.sidebar {
+  background: #7376df;
+  height: 100%;
+  color: #fff;
+  padding-top: 2em;
+  min-height: 800px;
+}
+
+.sidebar li {
+  margin-top: .5em;
+  margin-bottom: .5em;
+  font-size: 1em;
+  padding-left: .5em;
+}
+
+.sidebar i {
+  margin-right: .5em;
+  font-size: 1em;
+}
+
+.sidebar a {
+  color: #fff;
 }

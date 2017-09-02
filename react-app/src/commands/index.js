@@ -63,19 +63,32 @@ class Commands extends Component {
   render() {
     return (
       <div>
-        <h2>Commands</h2>
+        <h1>Commands</h1>
+        <hr />
 
+        <h3>Add Command</h3>
         <form
           onSubmit={this.addCommand}
         >
-          <input type='text' placeholder='trigger' value={this.state.trigger} onChange={this.handleTriggerChange} />
-          <input type='text' placeholder='response' value={this.state.response} onChange={this.handleResponseChange} />
+          <div className='form-group'>
+            <label> Trigger: </label>
+            <input className='form-control' type='text' placeholder='trigger' value={this.state.trigger} onChange={this.handleTriggerChange} />
+          </div>
 
-          <button type="submit">
+          <div className='form-group'>
+            <label> Response: </label>
+            <input className='form-control' type='text' placeholder='response' value={this.state.response} onChange={this.handleResponseChange} />
+          </div>
+
+          <button className='btn btn-primary' type="submit">
             Add
           </button>
         </form>
 
+        <br />
+        <br />
+
+        <h3>Current Commands</h3>
         <CommandList commands={this.state.commands} />
       </div>
     );

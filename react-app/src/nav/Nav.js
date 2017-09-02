@@ -18,13 +18,22 @@ class Nav extends Component {
     return (
       <ul className="nav flex-column">
         <li className="nav-item">
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <i className="fa fa-home" aria-hidden="true"></i>
+            Home
+          </Link>
         </li>
         <li className="nav-item">
-          <Link to="/commands">Commands</Link>
+          <Link to="/commands">
+            <i className="fa fa-terminal" aria-hidden="true"></i>
+            Commands
+          </Link>
         </li>
         <li className="nav-item">
-          <Link to="/timers">Timers</Link>
+          <Link to="/timers">
+            <i className="fa fa-clock-o" aria-hidden="true"></i>
+            Timers
+          </Link>
         </li>
       </ul>
     );

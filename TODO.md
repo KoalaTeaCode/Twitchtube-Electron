@@ -9,5 +9,5 @@
 - [x] Timers
 - [ ] Add edit and remove for commands and timers
 - [x] Start and Stop youtube/twitch
-- [ ] Add theme
+- [x] Add theme
 - [ ] Add from messages
