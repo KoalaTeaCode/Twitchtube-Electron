@@ -103,6 +103,8 @@ class Commands extends Component {
   }
 
   handelDeleteClick (commandId) {
+    window.amplitude.getInstance().logEvent('DELETE_COMMAND');
+
     let newCommands = this.state.commands.filter(command => {
       return command.id !== commandId;
     });

@@ -54,7 +54,10 @@ function setUpClient () {
         break;
       case "chat":
         // This is a chat message..
-        eventbus.emit('new-twitch-message', message);
+        eventbus.emit('new-twitch-message', {
+          text: message,
+          username: userstate['display-name'],
+        });
         break;
       case "whisper":
         // This is a whisper..
@@ -76,6 +79,10 @@ function setUpClient () {
 
   eventbus.on('new-youtube-message', (message) => {
     if (status === 'stopped') return;
+    console.log(message)
+    // @TODO: This should be checking for the youtube name right?
+    if (message.indexOf('From') !== -1) return; // Doesn't seem like the best way to prevent
+
     client.say(channel, message);
   });
 

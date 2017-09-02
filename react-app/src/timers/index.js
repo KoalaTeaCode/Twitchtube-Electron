@@ -95,6 +95,8 @@ class Timers extends Component {
   }
 
   handelDeleteClick (timerId) {
+    window.amplitude.getInstance().logEvent('DELETE_TIMER');
+
     let newTimers = this.state.timers.filter(timer => {
       return timer.id !== timerId;
     });

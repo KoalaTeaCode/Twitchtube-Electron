@@ -83,8 +83,11 @@ function finishLoadingGoogle (profile) {
 
   eventbus.on('new-twitch-message', (message) => {
     if (status === 'stopped') return;
-    if (message.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
-    GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
+    if (message.text.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
+    if (message.username.indexOf('twitchtubebot') !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
+    if (message.text.indexOf('From') !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
+
+    GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, `From ${message.username}: ${message.text}`);
   });
 
   eventbus.on('outgoing-youtube-message', (message) => {
