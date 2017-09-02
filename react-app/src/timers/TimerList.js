@@ -4,7 +4,7 @@ import React from 'react'
 
 // <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />
 
-const TimerList = ({ timers, onClick, deleteClick }) => (
+const TimerList = ({ timers, onClick, deleteClick, editClick }) => (
   <ul className='list-group' >
     {
       timers.map(timer => (
@@ -12,6 +12,7 @@ const TimerList = ({ timers, onClick, deleteClick }) => (
           <div style={{width: '100%'}}>
             {timer.message} {timer.interval}
             <div className='float-right'>
+              <i className="fa fa-pencil-square-o" aria-hidden="true" onClick={() => editClick(timer)}></i>
               <i className="fa fa-trash" aria-hidden="true" onClick={() => deleteClick(timer.id)}></i>
             </div>
           </div>

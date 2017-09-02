@@ -13,9 +13,12 @@ let commands_file = fs.readFileSync(commands_file_path, 'utf8');
 let commands = JSON.parse(commands_file);
 let commandsHashed = {};
 
+hashCommands();
+
 function hashCommands () {
+  commandsHashed = {};
   commands.forEach(command => {
-    commandsHashed[command.trigger] = command.message;
+    commandsHashed[command.trigger] = command.response;
   });
 }
 
@@ -40,6 +43,20 @@ ipcMain.on('command-removed', (event, arg) => {
   commands = newTimers;
 
   hashCommands();
+
+  let json = JSON.stringify(commands);
+  fs.writeFileSync(commands_file_path, json, 'utf8', (err, result) => {});
+});
+
+ipcMain.on('command-updated', (event, updatedTimer) => {
+  let index = commands.findIndex(timer => {
+    return timer.id = updatedTimer.id;
+  });
+
+  commands[index].trigger = updatedTimer.trigger;
+  commands[index].response = updatedTimer.response;
+
+  hashCommands(); // @TODO: Add function to check just this one
 
   let json = JSON.stringify(commands);
   fs.writeFileSync(commands_file_path, json, 'utf8', (err, result) => {});

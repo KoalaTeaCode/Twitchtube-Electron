@@ -14,6 +14,7 @@ class Commands extends Component {
     this.state = {
       trigger: '',
       response: '',
+      editingId: '',
       commands: []
     }
 
@@ -29,6 +30,7 @@ class Commands extends Component {
     this.handleTriggerChange = this.handleTriggerChange.bind(this);
     this.handleResponseChange = this.handleResponseChange.bind(this);
     this.handelDeleteClick = this.handelDeleteClick.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
     this.addCommand = this.addCommand.bind(this);
   }
 
@@ -44,16 +46,39 @@ class Commands extends Component {
     }
 
     // dispatch(addTodo(input.value))
-    let newTimer = {
+    if (!this.state.editingId) {
+      this.createCommand();
+      return;
+    }
+
+    let index = this.state.commands.findIndex(command => {
+      return command.id = this.state.editingId;
+    });
+
+    let updatedCommands = this.state.commands.slice();
+    updatedCommands[index].trigger = this.state.trigger;
+    updatedCommands[index].response = this.state.response;
+
+    this.setState({commands: updatedCommands});
+    this.setState({trigger: ''});
+    this.setState({response: ''});
+    this.setState({editingId: ''});
+
+    ipcRenderer.send('command-updated', updatedCommands[index]);
+  }
+
+  createCommand () {
+    let newCommand = {
       trigger: this.state.trigger,
       response: this.state.response,
       id: uuid(),
     };
 
-    this.setState({commands: this.state.commands.concat(newTimer)});
+    this.setState({commands: this.state.commands.concat(newCommand)});
     this.setState({trigger: ''});
+    this.setState({response: ''});
 
-    ipcRenderer.send('command-created', newTimer);
+    ipcRenderer.send('command-created', newCommand);
   }
 
   handleTriggerChange(event) {
@@ -64,15 +89,23 @@ class Commands extends Component {
     this.setState({response: event.target.value});
   }
 
-  handelDeleteClick (timerId) {
-    let newTimers = this.state.commands.filter(command => {
-      return command.id !== timerId;
+  handleEditClick (command) {
+    this.setState({
+      trigger: command.trigger,
+      response: command.response,
+      editingId: command.id,
+    });
+  }
+
+  handelDeleteClick (commandId) {
+    let newCommands = this.state.commands.filter(command => {
+      return command.id !== commandId;
     });
 
-    ipcRenderer.send('command-removed', timerId);
+    ipcRenderer.send('command-removed', commandId);
 
     this.setState({
-      commands: newTimers,
+      commands: newCommands,
     });
   }
 
@@ -82,7 +115,7 @@ class Commands extends Component {
         <h1>Commands</h1>
         <hr />
 
-        <h3>Add Command</h3>
+        <h3>{ this.state.editingId ? 'Edit Command' : 'Add Command' }</h3>
         <form
           onSubmit={this.addCommand}
         >
@@ -97,7 +130,7 @@ class Commands extends Component {
           </div>
 
           <button className='btn btn-primary' type="submit">
-            Add
+            { this.state.editingId ? 'Save' : 'Add' }
           </button>
         </form>
 
@@ -105,7 +138,7 @@ class Commands extends Component {
         <br />
 
         <h3>Current Commands</h3>
-        <CommandList commands={this.state.commands} deleteClick={this.handelDeleteClick} />
+        <CommandList commands={this.state.commands} deleteClick={this.handelDeleteClick} editClick={this.handleEditClick} />
       </div>
     );
   }

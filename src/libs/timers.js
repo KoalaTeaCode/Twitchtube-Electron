@@ -77,3 +77,17 @@ ipcMain.on('timer-removed', (event, arg) => {
   let json = JSON.stringify(timers);
   fs.writeFileSync(timers_file_path, json, 'utf8', (err, result) => {});
 });
+
+ipcMain.on('timer-updated', (event, updatedTimer) => {
+  let index = timers.findIndex(timer => {
+    return timer.id = updatedTimer.id;
+  });
+
+  timers[index].message = updatedTimer.message;
+  timers[index].interval = updatedTimer.interval;
+
+  generateIntervals(); // @TODO: Add function to check just this one
+
+  let json = JSON.stringify(timers);
+  fs.writeFileSync(timers_file_path, json, 'utf8', (err, result) => {});
+});

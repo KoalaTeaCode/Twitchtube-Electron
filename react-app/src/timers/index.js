@@ -13,6 +13,7 @@ class Timers extends Component {
     this.state = {
       message: '',
       interval: 0,
+      editingId: '',
       timers: []
     }
 
@@ -28,6 +29,7 @@ class Timers extends Component {
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleIntervalChange = this.handleIntervalChange.bind(this);
     this.handelDeleteClick = this.handelDeleteClick.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
     this.addTimer = this.addTimer.bind(this);
   }
 
@@ -44,6 +46,28 @@ class Timers extends Component {
 
     // dispatch(addTodo(input.value))
 
+    if (!this.state.editingId) {
+      this.createTimer();
+      return;
+    }
+
+    let index = this.state.timers.findIndex(timer => {
+      return timer.id = this.state.editingId;
+    });
+
+    let updatedTimers = this.state.timers.slice();
+    updatedTimers[index].message = this.state.message;
+    updatedTimers[index].interval = this.state.interval;
+
+    this.setState({timers: updatedTimers});
+    this.setState({message: ''});
+    this.setState({interval: ''});
+    this.setState({editingId: ''});
+
+    ipcRenderer.send('timer-updated', updatedTimers[index]);
+  }
+
+  createTimer () {
     let newTimer = {
       message: this.state.message,
       interval: this.state.interval,
@@ -77,13 +101,21 @@ class Timers extends Component {
     });
   }
 
+  handleEditClick (timer) {
+    this.setState({
+      message: timer.message,
+      interval: timer.interval,
+      editingId: timer.id,
+    });
+  }
+
   render() {
     return (
       <div>
         <h1>Timers</h1>
         <hr />
 
-        <h3>Add Timer</h3>
+        <h3>{ this.state.editingId ? 'Edit Timer' : 'Add Timer' }</h3>
         <form
           onSubmit={this.addTimer}
         >
@@ -98,7 +130,7 @@ class Timers extends Component {
           </div>
 
           <button className='btn btn-primary' type="submit">
-            Add
+            { this.state.editingId ? 'Save' : 'Add' }
           </button>
         </form>
 
@@ -106,7 +138,7 @@ class Timers extends Component {
         <br />
 
         <h3>Current Timers</h3>
-        <TimerList timers={this.state.timers} deleteClick={this.handelDeleteClick} />
+        <TimerList timers={this.state.timers} deleteClick={this.handelDeleteClick} editClick={this.handleEditClick} />
       </div>
     );
   }
