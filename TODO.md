@@ -1,5 +1,5 @@
 - [x] Youtube to Twitch
-- [ ] Save Auth
+- [Skipping for now] Save Auth
 - [x] Add Twitch OAuth
 - [x] Add configs
 - [x] Added initial react
@@ -8,3 +8,6 @@
 - [x] Commands
 - [x] Timers
 - [ ] Add edit and remove
+- [ ] Start and Stop youtube/twitch
+- [ ] Add theme
+- [ ] Add from messages

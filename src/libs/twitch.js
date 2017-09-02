@@ -1,5 +1,6 @@
 var tmi = require("tmi.js");
 let eventbus = require('./eventbus');
+import { ipcMain } from 'electron'
 import remote from 'electron'
 import {parse} from 'url'
 
@@ -19,6 +20,8 @@ var twitch = new TwitchApi({
 });
 let twitchUser = {};
 let channel = '';
+let status = 'running';
+let everythingLoaded = false;
 
 let options = {
     options: {
@@ -41,40 +44,54 @@ function setUpClient () {
   client.connect();
 
   client.on("message", function (channel, userstate, message, self) {
-      if (self) return;
+    if (status === 'stopped') return;
+    if (self) return;
 
-      // Handle different message types..
-      switch(userstate["message-type"]) {
-          case "action":
-              // This is an action message..
-              break;
-          case "chat":
-              // This is a chat message..
-              eventbus.emit('new-twitch-message', message);
-              break;
-          case "whisper":
-              // This is a whisper..
-              break;
-          default:
-              // Something else ?
-              break;
-      }
+    // Handle different message types..
+    switch(userstate["message-type"]) {
+      case "action":
+        // This is an action message..
+        break;
+      case "chat":
+        // This is a chat message..
+        eventbus.emit('new-twitch-message', message);
+        break;
+      case "whisper":
+        // This is a whisper..
+        break;
+      default:
+        // Something else ?
+        break;
+    }
   });
 
   client.on("subscription", function (channel, username, method, message, userstate) {
+    if (status === 'stopped') return;
     client.say(channel, `{username} has subscribed!`);
   });
 
   eventbus.on('new-youtube-message', (message) => {
+    if (status === 'stopped') return;
     client.say(channel, message);
   });
 
   eventbus.on('outgoing-twitch-message', (message) => {
+    if (status === 'stopped') return;
     client.say(channel, message);
   });
+
+  ipcMain.on('twitch-stop', (event, arg) => {
+    status = 'stopped';
+    event.sender.send('twitch-stopped')
+  });
+
+  everythingLoaded = true;
 }
 
 function setChannel () {
+  status = 'running';
+  if (everythingLoaded) return;
+
   twitch.getAuthenticatedUserChannel(twitchUser.access_token, (err, channelResponse) => {
     channel = channelResponse.display_name;
     options.channels.push(channel);

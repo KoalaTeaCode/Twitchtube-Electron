@@ -13,15 +13,12 @@ import AddTodo from './containers/AddTodo'
 import VisibleTodoList from './containers/VisibleTodoList'
 import Commands from './commands'
 import Timers from './timers'
+import Home from './Home'
 
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-    <AddTodo />
-    <VisibleTodoList />
-    <Footer />
-  </div>
-)
+
+// <AddTodo />
+// <VisibleTodoList />
+// <Footer />
 
 class App extends Component {
   render() {

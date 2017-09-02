@@ -48,15 +48,15 @@ function createWindow () {
 
   ipcMain.on('google-sign-in', (event, arg) => {
     googleSignIn();
-    event.sender.send('asynchronous-reply', 'pong')
+    // @TODO: wait for promise and verify?
+    event.sender.send('youtube-started', 'pong')
   });
 
   ipcMain.on('twitch-sign-in', (event, arg) => {
     twitchSignIn();
-    event.sender.send('asynchronous-reply', 'pong')
+    // @TODO: wait for promise and verify?
+    event.sender.send('twitch-started', 'pong')
   })
-
-  twitchSignIn();
 }
 
 // This method will be called when Electron has finished

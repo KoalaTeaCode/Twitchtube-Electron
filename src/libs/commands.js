@@ -24,6 +24,7 @@ ipcMain.on('command-created', (event, arg) => {
 });
 
 eventbus.on('new-youtube-message', (message) => {
+  if (commands[message]) eventbus.emit('outgoing-youtube-message', commands[message]);
 });
 
 eventbus.on('new-twitch-message', (message) => {

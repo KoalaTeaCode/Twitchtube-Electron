@@ -1,5 +1,6 @@
 import {parse} from 'url'
 import remote from 'electron'
+import { ipcMain } from 'electron'
 import axios from 'axios'
 import qs from 'qs'
 import eventbus from './eventbus'
@@ -22,6 +23,9 @@ let displayName = '';
 let liveChatId = '';
 let lastTimeChecked = moment();
 let nextPageToken = '';
+let status = 'running';
+let startedEverything = false;
+let chatTimeout;
 
 export async function googleSignIn () {
   GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
@@ -62,16 +66,32 @@ function mySignInFunction (oauth2Client) {
 
 function finishLoadingGoogle (profile) {
   liveChatId = profile.items[0].snippet.liveChatId;
+  // GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, 'Hello');
 
-  GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, 'Hello');
+  status = 'running';
+
+  if (startedEverything) return;
+
+  ipcMain.on('google-stop', (event, arg) => {
+    status = 'stopped';
+    event.sender.send('youtube-stopped')
+  });
 
   eventbus.on('new-twitch-message', (message) => {
+    if (status === 'stopped') return;
     if (message.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
     GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
   });
 
-  getChat()
+  eventbus.on('outgoing-youtube-message', (message) => {
+    if (status === 'stopped') return;
+    if (message.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
+    GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
+  });
 
+  getChat();
+
+  startedEverything = true;
 }
 
 function getChat () {
@@ -84,18 +104,23 @@ function getChat () {
 
 function parseLiveChatMessages (response) {
   nextPageToken = response.nextPageToken;
+
+  let chatWasSeen = false;
   response.items.forEach(item => {
     let dateOfItem = moment(item.snippet.publishedAt);
     if (lastTimeChecked.isBefore(dateOfItem)) {
       let messageText = item.snippet.displayMessage;
-      eventbus.emit('new-youtube-message', messageText);
-
-      // We only need to update this after we have seen a new message
-      lastTimeChecked = moment();
+      chatWasSeen = true;
+      if (status !== 'stopped') eventbus.emit('new-youtube-message', messageText);
     }
   });
 
-  setTimeout(() => {
+  if (chatWasSeen) {
+    // We only need to update this after we have seen a new message
+    lastTimeChecked = moment();
+  }
+
+  chatTimeout = setTimeout(() => {
     getChat()
   }, response.pollingIntervalMillis)
 }
