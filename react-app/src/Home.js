@@ -13,6 +13,16 @@ class Home extends Component {
       twitchStatus: 'stopped',
     }
 
+    ipcRenderer.send('twitch-check', 'ping');
+    ipcRenderer.on('twitch-check-response', (event, arg) => {
+      if (arg) this.setState({twitchStatus: 'started'});
+    });
+
+    ipcRenderer.send('google-check', 'ping');
+    ipcRenderer.on('google-check-response', (event, arg) => {
+      if (arg) this.setState({youtubeStatus: 'started'});
+    });
+
     ipcRenderer.on('youtube-started', (event, arg) => {
       this.setState({youtubeStatus: 'started'});
     });

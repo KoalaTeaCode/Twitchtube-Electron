@@ -70,6 +70,10 @@ function setUpClient () {
     client.say(channel, `{username} has subscribed!`);
   });
 
+  ipcMain.on('twitch-check', (event, arg) => {
+    event.sender.send('twitch-check-response', status === 'running')
+  });
+
   eventbus.on('new-youtube-message', (message) => {
     if (status === 'stopped') return;
     client.say(channel, message);

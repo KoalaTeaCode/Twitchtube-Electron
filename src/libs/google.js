@@ -77,6 +77,10 @@ function finishLoadingGoogle (profile) {
     event.sender.send('youtube-stopped')
   });
 
+  ipcMain.on('google-check', (event, arg) => {
+    event.sender.send('google-check-response', status === 'running')
+  });
+
   eventbus.on('new-twitch-message', (message) => {
     if (status === 'stopped') return;
     if (message.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback

@@ -7,8 +7,9 @@
 - [ ] Add eslint
 - [x] Commands
 - [x] Timers
-- [ ] Add edit and remove for commands and timers
+- [x] Add edit and remove for commands and timers
 - [x] Start and Stop youtube/twitch
 - [x] Add theme
 - [ ] Add from messages
 - [ ] Analytics
+- [x] Check for online status of bot
