@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TimerList from './TimerList'
+import uuid from 'uuid/v1'
 
 // Electron
 const electron = window.require('electron');
@@ -26,6 +27,7 @@ class Timers extends Component {
 
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleIntervalChange = this.handleIntervalChange.bind(this);
+    this.handelDeleteClick = this.handelDeleteClick.bind(this);
     this.addTimer = this.addTimer.bind(this);
   }
 
@@ -42,13 +44,17 @@ class Timers extends Component {
 
     // dispatch(addTodo(input.value))
 
-    this.setState({timers: this.state.timers.concat(this.state.message)});
-    this.setState({message: ''});
-
-    ipcRenderer.send('timer-created', {
+    let newTimer = {
       message: this.state.message,
       interval: this.state.interval,
-    })
+      id: uuid(),
+    };
+
+    this.setState({timers: this.state.timers.concat(newTimer)});
+    this.setState({message: ''});
+    this.setState({interval: ''});
+
+    ipcRenderer.send('timer-created', newTimer);
   }
 
   handleMessageChange(event) {
@@ -57,6 +63,18 @@ class Timers extends Component {
 
   handleIntervalChange(event) {
     this.setState({interval: event.target.value});
+  }
+
+  handelDeleteClick (timerId) {
+    let newTimers = this.state.timers.filter(timer => {
+      return timer.id !== timerId;
+    });
+
+    ipcRenderer.send('timer-removed', timerId);
+
+    this.setState({
+      timers: newTimers,
+    });
   }
 
   render() {
@@ -88,7 +106,7 @@ class Timers extends Component {
         <br />
 
         <h3>Current Timers</h3>
-        <TimerList timers={this.state.timers} />
+        <TimerList timers={this.state.timers} deleteClick={this.handelDeleteClick} />
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CommandList from './CommandList'
+import uuid from 'uuid/v1'
 
 // Electron
 const electron = window.require('electron');
@@ -17,7 +18,7 @@ class Commands extends Component {
     }
 
     ipcRenderer.on('commands-loaded', (event, arg) => {
-      let commands = Object.keys(arg);
+      let commands = arg;
       this.setState({commands});
     });
 
@@ -27,6 +28,7 @@ class Commands extends Component {
 
     this.handleTriggerChange = this.handleTriggerChange.bind(this);
     this.handleResponseChange = this.handleResponseChange.bind(this);
+    this.handelDeleteClick = this.handelDeleteClick.bind(this);
     this.addCommand = this.addCommand.bind(this);
   }
 
@@ -42,14 +44,16 @@ class Commands extends Component {
     }
 
     // dispatch(addTodo(input.value))
-
-    this.setState({commands: this.state.commands.concat(this.state.trigger)});
-    this.setState({trigger: ''});
-
-    ipcRenderer.send('command-created', {
+    let newTimer = {
       trigger: this.state.trigger,
       response: this.state.response,
-    })
+      id: uuid(),
+    };
+
+    this.setState({commands: this.state.commands.concat(newTimer)});
+    this.setState({trigger: ''});
+
+    ipcRenderer.send('command-created', newTimer);
   }
 
   handleTriggerChange(event) {
@@ -58,6 +62,18 @@ class Commands extends Component {
 
   handleResponseChange(event) {
     this.setState({response: event.target.value});
+  }
+
+  handelDeleteClick (timerId) {
+    let newTimers = this.state.commands.filter(command => {
+      return command.id !== timerId;
+    });
+
+    ipcRenderer.send('command-removed', timerId);
+
+    this.setState({
+      commands: newTimers,
+    });
   }
 
   render() {
@@ -89,7 +105,7 @@ class Commands extends Component {
         <br />
 
         <h3>Current Commands</h3>
-        <CommandList commands={this.state.commands} />
+        <CommandList commands={this.state.commands} deleteClick={this.handelDeleteClick} />
       </div>
     );
   }

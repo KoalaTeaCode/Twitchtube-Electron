@@ -32,7 +32,7 @@ class App extends Component {
                 <Nav value={'test'} />
               </section>
 
-              <section className="col-9 App-intro">
+              <section className="col-9 offset-3 App-intro">
                 <Route exact path="/" component={Home} />
                 <Route exact path="/commands" component={Commands} />
                 <Route exact path="/timers" component={Timers} />

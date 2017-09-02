@@ -11,3 +11,4 @@
 - [x] Start and Stop youtube/twitch
 - [x] Add theme
 - [ ] Add from messages
+- [ ] Analytics

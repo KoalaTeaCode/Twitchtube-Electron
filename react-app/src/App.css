@@ -45,6 +45,7 @@ button:hover {
   color: #fff;
   padding-top: 2em;
   min-height: 800px;
+  position: fixed;
 }
 
 .sidebar li {
