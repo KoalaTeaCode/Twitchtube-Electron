@@ -18,6 +18,8 @@ class Commands extends Component {
       commands: []
     }
 
+    window.amplitude.getInstance().logEvent('VIEW_COMMAND_PAGE');
+
     ipcRenderer.on('commands-loaded', (event, arg) => {
       let commands = arg;
       this.setState({commands});
@@ -47,9 +49,12 @@ class Commands extends Component {
 
     // dispatch(addTodo(input.value))
     if (!this.state.editingId) {
+      window.amplitude.getInstance().logEvent('CREATE_COMMAND');
       this.createCommand();
       return;
     }
+
+    window.amplitude.getInstance().logEvent('UPDATE_COMMAND');
 
     let index = this.state.commands.findIndex(command => {
       return command.id = this.state.editingId;

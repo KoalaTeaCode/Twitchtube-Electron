@@ -11,5 +11,5 @@
 - [x] Start and Stop youtube/twitch
 - [x] Add theme
 - [ ] Add from messages
-- [ ] Analytics
+- [x] Analytics
 - [x] Check for online status of bot

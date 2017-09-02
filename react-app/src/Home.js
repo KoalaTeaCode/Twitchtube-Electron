@@ -24,18 +24,22 @@ class Home extends Component {
     });
 
     ipcRenderer.on('youtube-started', (event, arg) => {
+      window.amplitude.getInstance().logEvent('YOUTUBE_START');
       this.setState({youtubeStatus: 'started'});
     });
 
     ipcRenderer.on('youtube-stopped', (event, arg) => {
+      window.amplitude.getInstance().logEvent('YOUTUBE_STOP');
       this.setState({youtubeStatus: 'stopped'});
     });
 
     ipcRenderer.on('twitch-started', (event, arg) => {
+      window.amplitude.getInstance().logEvent('TWITCH_START');
       this.setState({twitchStatus: 'started'});
     });
 
     ipcRenderer.on('twitch-stopped', (event, arg) => {
+      window.amplitude.getInstance().logEvent('TWITCH_STOP');
       this.setState({twitchStatus: 'stopped'});
     });
 

@@ -17,6 +17,8 @@ class Timers extends Component {
       timers: []
     }
 
+    window.amplitude.getInstance().logEvent('VIEW_TIMER_PAGE');
+
     ipcRenderer.on('timers-loaded', (event, arg) => {
       let timers = arg;
       this.setState({timers});
@@ -47,9 +49,12 @@ class Timers extends Component {
     // dispatch(addTodo(input.value))
 
     if (!this.state.editingId) {
+      window.amplitude.getInstance().logEvent('CREATE_TIMER');
       this.createTimer();
       return;
     }
+
+    window.amplitude.getInstance().logEvent('UPDATE_TIMER');
 
     let index = this.state.timers.findIndex(timer => {
       return timer.id = this.state.editingId;

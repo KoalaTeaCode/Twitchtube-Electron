@@ -21,6 +21,11 @@ import Home from './Home'
 // <Footer />
 
 class App extends Component {
+  constructor () {
+    super()
+    window.amplitude.getInstance().logEvent('MAIN_VIEW');
+  }
+
   render() {
     return (
       <Router>
