@@ -16,6 +16,7 @@ const { twitchSignIn } = require('./libs/twitch.js');
 const transporter = require('./libs/transporter.js');
 import { googleSignIn } from './libs/google.js';
 import commands from './libs/commands.js';
+import timers from './libs/timers.js';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

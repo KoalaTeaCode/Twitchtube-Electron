@@ -5,5 +5,6 @@
 - [x] Added initial react
 - [ ] Add production react command
 - [ ] Add eslint
-- [ ] Commands
-- [ ] Timers
+- [x] Commands
+- [x] Timers
+- [ ] Add edit and remove

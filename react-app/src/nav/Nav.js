@@ -23,6 +23,9 @@ class Nav extends Component {
         <li className="nav-item">
           <Link to="/commands">Commands</Link>
         </li>
+        <li className="nav-item">
+          <Link to="/timers">Timers</Link>
+        </li>
       </ul>
     );
   }

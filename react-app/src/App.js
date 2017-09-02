@@ -12,6 +12,7 @@ import Footer from './components/Footer'
 import AddTodo from './containers/AddTodo'
 import VisibleTodoList from './containers/VisibleTodoList'
 import Commands from './commands'
+import Timers from './timers'
 
 const Home = () => (
   <div>
@@ -42,6 +43,7 @@ class App extends Component {
               <section className="col-10 App-intro">
                 <Route exact path="/" component={Home} />
                 <Route exact path="/commands" component={Commands} />
+                <Route exact path="/timers" component={Timers} />
               </section>
             </div>
           </div>
