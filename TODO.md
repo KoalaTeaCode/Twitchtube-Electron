@@ -3,7 +3,7 @@
 - [x] Add Twitch OAuth
 - [x] Add configs
 - [x] Added initial react
-- [ ] Add production react command
+- [x] Add production react command
 - [ ] Add eslint
 - [x] Commands
 - [x] Timers
