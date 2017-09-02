@@ -7,7 +7,7 @@
 - [ ] Add eslint
 - [x] Commands
 - [x] Timers
-- [ ] Add edit and remove
-- [ ] Start and Stop youtube/twitch
+- [ ] Add edit and remove for commands and timers
+- [x] Start and Stop youtube/twitch
 - [ ] Add theme
 - [ ] Add from messages
