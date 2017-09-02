@@ -3,3 +3,5 @@ dist
 .env
 local_data
 twitchtube-electron-darwin-x64
+app-dist
+.DS_Store

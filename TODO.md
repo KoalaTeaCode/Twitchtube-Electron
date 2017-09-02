@@ -13,3 +13,5 @@
 - [ ] Add from messages
 - [x] Analytics
 - [x] Check for online status of bot
+- [x] Fix routers when built
+- [ ] Reduce size of electron package by remove items
