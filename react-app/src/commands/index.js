@@ -128,12 +128,12 @@ class Commands extends Component {
         >
           <div className='form-group'>
             <label> Trigger: </label>
-            <input className='form-control' type='text' placeholder='trigger' value={this.state.trigger} onChange={this.handleTriggerChange} />
+            <input className='form-control' type='text' placeholder='Ex: !testing' value={this.state.trigger} onChange={this.handleTriggerChange} />
           </div>
 
           <div className='form-group'>
             <label> Response: </label>
-            <input className='form-control' type='text' placeholder='response' value={this.state.response} onChange={this.handleResponseChange} />
+            <input className='form-control' type='text' placeholder='Ex: Hello from the bot' value={this.state.response} onChange={this.handleResponseChange} />
           </div>
 
           <button className='btn btn-primary' type="submit">

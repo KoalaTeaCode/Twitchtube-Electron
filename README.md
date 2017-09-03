@@ -9,3 +9,4 @@
   - make config.json from env
   - cd react-app && yarn build
   - yarn dist
+  - Use ` du -xcsh *` for file checking

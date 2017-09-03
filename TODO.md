@@ -14,4 +14,5 @@
 - [x] Analytics
 - [x] Check for online status of bot
 - [x] Fix routers when built
-- [ ] Reduce size of electron package by remove items
+- [x] Reduce size of electron package by remove items
+- [x] Store local data in app.getPath https://medium.com/@ccnokes/how-to-store-user-data-in-electron-3ba6bf66bc1e

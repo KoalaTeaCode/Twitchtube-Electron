@@ -1,19 +1,42 @@
 import eventbus from './eventbus';
 const { ipcMain } = require('electron');
 const fs = require('fs');
+const storage = require('electron-json-storage');
 import moment from 'moment';
 
-const timers_file_path = __dirname + '/../../local_data/timers.json';
-if (!fs.existsSync(timers_file_path)) {
-  let json = JSON.stringify([]);
-  fs.writeFileSync(timers_file_path, json, 'utf8', (err, result) => {});
+let timers = [];
+let timerIntervals = {};
+
+storage.get('twitchtube_timers', function(error, data) {
+  if (error) throw error;
+
+  if (Array.isArray(data) && data.length > 0) timers = data;
+  startTimerCommands();
+});
+
+function startTimerCommands() {
+  generateIntervals();
+
+  // @TODO: Just set minute interval?
+  let lastMinuteChecked = moment().minute();
+  setInterval(() => {
+    let currentMinute = moment().minute();
+
+    if (currentMinute === lastMinuteChecked) return;
+
+    lastMinuteChecked = currentMinute;
+
+    if (!timerIntervals[currentMinute]) return;
+
+    timerIntervals[currentMinute].timers.forEach(timer => {
+      // @TODO: Check for platform?
+      eventbus.emit('outgoing-twitch-message', timer.message);
+    });
+  }, 1000);
+
+  setListeners();
 }
 
-let timers_file = fs.readFileSync(timers_file_path, 'utf8');
-
-let timers = JSON.parse(timers_file);
-
-let timerIntervals = {};
 function generateIntervals() {
   timers.forEach(timer => {
     let minuteIndex = parseInt(timer.interval, 10);
@@ -34,60 +57,41 @@ function generateIntervals() {
     }
   });
 }
-generateIntervals();
 
-// @TODO: Just set minute interval?
-let lastMinuteChecked = moment().minute();
-setInterval(() => {
-  let currentMinute = moment().minute();
-
-  if (currentMinute === lastMinuteChecked) return;
-
-  lastMinuteChecked = currentMinute;
-
-  if (!timerIntervals[currentMinute]) return;
-
-  timerIntervals[currentMinute].timers.forEach(timer => {
-    // @TODO: Check for platform?
-    eventbus.emit('outgoing-twitch-message', timer.message);
-  });
-}, 1000);
-
-ipcMain.on('get-timers', (event, arg) => {
-  ipcMain.emit('timers-loaded', timers);
-  event.sender.send('timers-loaded', timers)
-});
-
-ipcMain.on('timer-created', (event, arg) => {
-  timers.push(arg);
-  generateIntervals(); // @TODO: Add function to check just this one
-
-  let json = JSON.stringify(timers);
-  fs.writeFileSync(timers_file_path, json, 'utf8', (err, result) => {});
-});
-
-ipcMain.on('timer-removed', (event, arg) => {
-  let newTimers = timers.filter(timer => {
-    return timer.id !== arg;
-  });
-  timers = newTimers;
-
-  generateIntervals(); // @TODO: Add function to check just this one
-
-  let json = JSON.stringify(timers);
-  fs.writeFileSync(timers_file_path, json, 'utf8', (err, result) => {});
-});
-
-ipcMain.on('timer-updated', (event, updatedTimer) => {
-  let index = timers.findIndex(timer => {
-    return timer.id = updatedTimer.id;
+function setListeners () {
+  ipcMain.on('get-timers', (event, arg) => {
+    ipcMain.emit('timers-loaded', timers);
+    event.sender.send('timers-loaded', timers)
   });
 
-  timers[index].message = updatedTimer.message;
-  timers[index].interval = updatedTimer.interval;
+  ipcMain.on('timer-created', (event, arg) => {
+    timers.push(arg);
+    generateIntervals(); // @TODO: Add function to check just this one
 
-  generateIntervals(); // @TODO: Add function to check just this one
+    storage.set('twitchtube_timers', timers);
+  });
 
-  let json = JSON.stringify(timers);
-  fs.writeFileSync(timers_file_path, json, 'utf8', (err, result) => {});
-});
+  ipcMain.on('timer-removed', (event, arg) => {
+    let newTimers = timers.filter(timer => {
+      return timer.id !== arg;
+    });
+    timers = newTimers;
+
+    generateIntervals(); // @TODO: Add function to check just this one
+
+    storage.set('twitchtube_timers', timers);
+  });
+
+  ipcMain.on('timer-updated', (event, updatedTimer) => {
+    let index = timers.findIndex(timer => {
+      return timer.id = updatedTimer.id;
+    });
+
+    timers[index].message = updatedTimer.message;
+    timers[index].interval = updatedTimer.interval;
+
+    generateIntervals(); // @TODO: Add function to check just this one
+
+    storage.set('twitchtube_timers', timers);
+  });
+}
