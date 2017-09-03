@@ -10,7 +10,8 @@
     "babel": "babel",
     "webpack": "webpack",
     "pack": "electron-builder --dir",
-    "dist": "electron-packager .  --overwrite --out=app-dist --ignore='(app-dist|react-app)'"
+    "dist": "electron-packager .  --overwrite --out=app-dist --ignore='(app-dist|react-app)'",
+    "dist-win": "electron-packager . --platform=win32  --overwrite --out=app-dist --ignore='(app-dist|react-app)'"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [

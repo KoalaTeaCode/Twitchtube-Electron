@@ -64,10 +64,10 @@ function setListeners () {
   });
 
   eventbus.on('new-youtube-message', (message) => {
-    if (commandsHashed[message]) eventbus.emit('outgoing-youtube-message', commandsHashed[message.text]);
+    if (commandsHashed[message]) eventbus.emit('outgoing-youtube-message', commandsHashed[message]);
   });
 
   eventbus.on('new-twitch-message', (message) => {
-    if (commandsHashed[message]) eventbus.emit('outgoing-twitch-message', commandsHashed[message.text]);
+    if (commandsHashed[message.text]) eventbus.emit('outgoing-twitch-message', commandsHashed[message.text]);
   });
 }

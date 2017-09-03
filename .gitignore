@@ -5,3 +5,4 @@ local_data
 twitchtube-electron-darwin-x64
 app-dist
 .DS_Store
+config.json
