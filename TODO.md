@@ -10,7 +10,7 @@
 - [x] Add edit and remove for commands and timers
 - [x] Start and Stop youtube/twitch
 - [x] Add theme
-- [ ] Add from messages
+- [x] Add from messages
 - [x] Analytics
 - [x] Check for online status of bot
 - [x] Fix routers when built

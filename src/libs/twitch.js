@@ -4,6 +4,7 @@ import { ipcMain } from 'electron'
 import remote from 'electron'
 import {parse} from 'url'
 import config from '../config'
+const notify = require('electron-main-notification')
 
 const TWITCH_USERNAME = config.TWITCH_USERNAME || process.env.TWITCH_USERNAME;
 const TWITCH_PASSWORD = config.TWITCH_PASSWORD || process.env.TWITCH_PASSWORD;
@@ -142,6 +143,8 @@ export function signInWithPopup () {
       const query = parse(url, true).query
       if (query) {
         if (query.error) {
+          notify('Error!', { body: `There was an error: ${query.error}` })
+          setImmediate(() => authWindow.close())
           reject(new Error(`There was an error: ${query.error}`))
         } else if (query.code) {
           // Login is complete

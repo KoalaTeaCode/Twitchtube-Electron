@@ -6,6 +6,7 @@ import qs from 'qs'
 import eventbus from './eventbus'
 import moment from 'moment';
 import config from '../config'
+const notify = require('electron-main-notification')
 
 const GOOGLE_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth'
 const GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token'
@@ -182,7 +183,8 @@ export function signInWithPopup () {
       const query = parse(url, true).query
       if (query) {
         if (query.error) {
-          alert(`There was an error: ${query.error}`);
+          notify('Error!', { body: `There was an error: ${query.error}` })
+          setImmediate(() => authWindow.close())
           reject(new Error(`There was an error: ${query.error}`))
         } else if (query.code) {
           // Login is complete
