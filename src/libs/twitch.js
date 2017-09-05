@@ -156,7 +156,8 @@ export function signInWithPopup () {
 
     authWindow.on('closed', () => {
       // TODO: Handle this smoothly
-      throw new Error('Auth window was closed by user')
+      // throw new Error('Auth window was closed by user')
+      reject();
     })
 
     authWindow.webContents.on('will-navigate', (event, url) => {

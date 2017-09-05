@@ -10,3 +10,4 @@
   - cd react-app && yarn build
   - yarn dist
   - Use ` du -xcsh *` for file checking
+  - Add homebrew wine

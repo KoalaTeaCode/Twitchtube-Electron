@@ -46,15 +46,23 @@ function createWindow () {
 
 
   ipcMain.on('google-sign-in', (event, arg) => {
-    googleSignIn();
-    // @TODO: wait for promise and verify?
-    event.sender.send('youtube-started', 'pong')
+    googleSignIn()
+      .then(() => {
+        event.sender.send('youtube-started', 'pong')
+      })
+      .catch(() => {
+
+      })
   });
 
   ipcMain.on('twitch-sign-in', (event, arg) => {
-    twitchSignIn();
-    // @TODO: wait for promise and verify?
-    event.sender.send('twitch-started', 'pong')
+    twitchSignIn()
+      .then(() => {
+        event.sender.send('twitch-started', 'pong')
+      })
+      .catch(() => {
+
+      })
   })
 }
 

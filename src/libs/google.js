@@ -34,16 +34,20 @@ export async function googleSignIn () {
     GOOGLE_CLIENT_SECRET,
     GOOGLE_REDIRECT_URI
   );
-  const code = await signInWithPopup()
 
-  oauth2Client.getToken(code, function (err, tokens) {
-    // Now tokens contains an access_token and an optional refresh_token. Save them.
-    if (!err) {
-      oauth2Client.setCredentials(tokens);
-      mySignInFunction(oauth2Client)
-    }
-  });
-  return
+  return await signInWithPopup()
+    .then((code) => {
+      oauth2Client.getToken(code, function (err, tokens) {
+        // Now tokens contains an access_token and an optional refresh_token. Save them.
+        if (!err) {
+          oauth2Client.setCredentials(tokens);
+          mySignInFunction(oauth2Client)
+        }
+      });
+    })
+    .catch(() => {
+      throw new Error(`Error`)
+    })
 }
 
 function mySignInFunction (oauth2Client) {
@@ -170,6 +174,7 @@ export function signInWithPopup () {
       const query = parse(url, true).query
       if (query) {
         if (query.error) {
+          alert(`There was an error: ${query.error}`);
           reject(new Error(`There was an error: ${query.error}`))
         } else if (query.code) {
           // Login is complete
@@ -184,7 +189,8 @@ export function signInWithPopup () {
 
     authWindow.on('closed', () => {
       // TODO: Handle this smoothly
-      throw new Error('Auth window was closed by user')
+      // throw new Error('Auth window was closed by user')
+      reject();
     })
 
     authWindow.webContents.on('will-navigate', (event, url) => {
