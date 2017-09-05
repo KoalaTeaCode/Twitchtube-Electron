@@ -64,7 +64,7 @@ function setListeners () {
   });
 
   eventbus.on('new-youtube-message', (message) => {
-    if (commandsHashed[message]) eventbus.emit('outgoing-youtube-message', commandsHashed[message]);
+    if (commandsHashed[message.text]) eventbus.emit('outgoing-youtube-message', commandsHashed[message.text]);
   });
 
   eventbus.on('new-twitch-message', (message) => {

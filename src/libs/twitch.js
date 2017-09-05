@@ -82,9 +82,9 @@ function setUpClient () {
     if (status === 'stopped') return;
 
     // @TODO: This should be checking for the youtube name right?
-    if (message.indexOf('From') !== -1) return; // Doesn't seem like the best way to prevent
+    //if (message.text.indexOf('From') !== -1) return; // Doesn't seem like the best way to prevent
 
-    client.say(channel, message);
+    client.say(channel, `From ${message.author}: ${message.text}`);
   });
 
   eventbus.on('outgoing-twitch-message', (message) => {

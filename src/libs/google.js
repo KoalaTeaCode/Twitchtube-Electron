@@ -94,7 +94,7 @@ function finishLoadingGoogle (profile) {
 
   eventbus.on('outgoing-youtube-message', (message) => {
     if (status === 'stopped') return;
-    if (message.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
+    if (message.text && message.text.indexOf(displayName) !== -1) return; // Doesn't seem like the best way to prevent Google messages from being broughtback
     GoogleApiWrapper.insertLiveChat(GoogleApiWrapper.oauth2Client, liveChatId, message);
   });
 
@@ -120,7 +120,15 @@ function parseLiveChatMessages (response) {
     if (lastTimeChecked.isBefore(dateOfItem)) {
       let messageText = item.snippet.displayMessage;
       chatWasSeen = true;
-      if (status !== 'stopped') eventbus.emit('new-youtube-message', messageText);
+
+      // If from self, return
+      let messageAuthor = item.authorDetails.displayName;
+      if (messageAuthor === displayName) return;
+
+      if (status !== 'stopped') eventbus.emit('new-youtube-message', {
+        text: messageText,
+        author: messageAuthor,
+      });
     }
   });
 

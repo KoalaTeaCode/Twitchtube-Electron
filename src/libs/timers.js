@@ -31,6 +31,7 @@ function startTimerCommands() {
     timerIntervals[currentMinute].timers.forEach(timer => {
       // @TODO: Check for platform?
       eventbus.emit('outgoing-twitch-message', timer.message);
+      eventbus.emit('outgoing-youtube-message', timer.message);
     });
   }, 1000);
 
