@@ -1,4 +1,6 @@
 # To Run in Development Mode
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/KoalaTeaCode/Twitchtube-Electron.svg)](https://greenkeeper.io/)
  - Open a terminal
  - cd react-app
  - yarn start
