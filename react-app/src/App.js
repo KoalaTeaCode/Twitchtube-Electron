@@ -14,6 +14,7 @@ import AddTodo from './containers/AddTodo'
 import VisibleTodoList from './containers/VisibleTodoList'
 import Commands from './commands'
 import Timers from './timers'
+import Feedback from './feedback'
 import Home from './Home'
 
 
@@ -43,6 +44,7 @@ class App extends Component {
                 <Route exact path="/" component={Home} />
                 <Route exact path="/commands" component={Commands} />
                 <Route exact path="/timers" component={Timers} />
+                <Route exact path="/feedback" component={Feedback} />
               </section>
             </div>
           </div>

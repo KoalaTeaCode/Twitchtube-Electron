@@ -44,6 +44,21 @@ function createWindow () {
     mainWindow = null
   })
 
+  ipcMain.on('open-update-window', (event, arg) => {
+    console.log("Sd")
+    let win = new BrowserWindow({
+      width: 500,
+      height: 600,
+      show: true,
+    })
+    win.on('closed', () => {
+      win = null
+    })
+
+    // Load a remote URL
+    win.loadURL('http://twitchtube.io')
+  });
+
 
   ipcMain.on('google-sign-in', (event, arg) => {
     googleSignIn()
